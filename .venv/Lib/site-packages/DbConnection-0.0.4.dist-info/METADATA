@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: DbConnection
+Version: 0.0.4
+Summary: Convenient wrapper to create database connection engine based on the parameters passed. This engine can be used to run sql queries on the respective databases.
+Home-page: 
+Download-URL: 
+Author: Mallikarjuna Devaraya
+License: MIT
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Build Tools
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+License-File: Licence
+Requires-Dist: SQLAlchemy (==1.4.25)
+Requires-Dist: urllib3 (==1.26.7)
+Requires-Dist: pyodbc (==4.0.34)
+Requires-Dist: psycopg2 (==2.9.3)
+Requires-Dist: cx-Oracle (==8.3.0)
+Requires-Dist: oracledb (==1.0.3)
+
+# Database connection creator
+Convenient wrapper to create database connection engine based on the parameters passed. This engine can be used to run 
+sql queries on the respective databases.
+
+## Install with pip
+```bash
+$ pip install DbConnection
+```
+
+## Usage
+1. Import the library.
+    ```python
+   from DbConnection.DbConnectionCreator import DbConnectionCreator
+    ```
+
+2. Create an instance.
+    ```python 
+   sql_db_con = DbConnectionCreator(project_path="", logger=<your_logger_instance>, env="", db_library="").get_database_connection_object()
+    ```
+    Arguments (all are mandatory):
+    * `project_path`: Project name, which would serve as the logger's name (*if specified*), and the prefix for log filenames.
+    * `logger`: your Logger Instance
+    * `"env"`: Execution Environment
+    * `"env"`: select specifc library either 'sqlalchemy' and 'oracledb' 
+    
+3. create a connection string
+    ```python
+   conn_string = sql_db_con.get_session_conn_string(self, test='local', co_name=None, 
+                schema=False, vault_cred_dict=None, local_creds_json_file_with_path=None,
+                 connection_keys_mapper_file_with_path=None)
+    ```
+    Arguments (all are mandatory):
+    * `test`: 'local' or 'deploy' which says whether to run in local or deploy
+    * `co_name`: 'AZURE' or 'Postgres' or 'CRM'. returns the respective connection string
+    * `schema`: pass False as value to establish connection only to database and not schema
+    * `vault_cred_dict`: dictionary which contains values read from vault secret paths
+    * `local_creds_json_file_with_path`: json file which contains credentials in the same format as vault secret values
+    * `connection_keys_mapper_file_with_path`: json file contains the specific creds keys to use for each co_name
+   
+4. create an engine
+   ```python
+   conn_engine = sql_db_con.create_eng(conn_string)
+    ```
+    Arguments (all are mandatory):
+    * `conn_string`: connection string obtained in step 3
+
+5. create a session
+   ```python
+   conn_session = sql_db_con.create_session(conn_string)
+    ```
+    Arguments (all are mandatory):
+    * `conn_string`: connection string obtained in step 3
+   
+## Author
+
+**&copy; 2022, [Mallikarjuna Devaraya](mallikarjuna.devaraya@gartner.com)**.
