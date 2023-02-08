@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from Registration.serializers import *
+from Services.serializers import *
 from user.models import *
 from user.serializers import CountryCodeSerializer, UserSerializer, UserAppSerializer
 from datetime import datetime
